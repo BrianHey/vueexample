@@ -31,12 +31,21 @@
         </tr>
       </tbody>
     </table>
+
+    <button class="btn btn-info" @click="loginGmail">
+      Log in con Gmail jeje =)
+    </button>
+
+    <img :src="user.photoURL" />
   </div>
 </template>
 
 <script>
 import HelloWorld from "./components/HelloWorld.vue";
 import Saludo from "./components/Saludo.vue";
+
+import firebase from "firebase";
+
 export default {
   name: "App",
   data() {
@@ -47,12 +56,17 @@ export default {
       usuarios: [],
       encendido: false,
       indiceUsersEditing: "",
+      hobbies: [],
+      user: {},
     };
   },
 
   methods: {
     addUsers() {
-      this.usuarios.push({ nombre: this.nombre, hobbie: this.hobbie });
+      firebase
+        .firestore()
+        .collection("hobbies")
+        .add({ nombre: this.nombre, hobbie: this.hobbie });
     },
     editUsers(indice) {
       this.indiceUsersEditing = indice;
@@ -62,18 +76,41 @@ export default {
       let elementoModificado = { nombre: this.nombre, hobbie: this.hobbie };
       console.log(elementoModificado);
       let usuarios = this.usuarios;
-
       usuarios[this.indiceUsersEditing] = elementoModificado;
       let newUsuarios = usuarios;
-
       this.usuarios = newUsuarios;
-
       this.encendido = false;
+    },
+
+    loginGmail() {
+      alert();
+      var provider = new firebase.auth.GoogleAuthProvider();
+
+      firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then((resul) => {
+          this.user = resul.user;
+        });
     },
   },
   components: {
     HelloWorld,
     Saludo,
+  },
+
+  mounted() {
+    firebase
+      .firestore()
+      .collection("hobbies")
+      .onSnapshot((snapshot) => {
+        let hobbies = [];
+        snapshot.forEach((doc) => {
+          hobbies.push({ id: doc.id, data: doc.data() });
+        });
+        this.hobbies = hobbies;
+        this.usuarios = hobbies.map((h) => h.data);
+      });
   },
 };
 </script>
