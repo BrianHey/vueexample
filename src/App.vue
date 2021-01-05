@@ -10,7 +10,6 @@
         <b-button variant="danger" @click="eraseUser(pablo.index)" >Borrar</b-button>
       </template>
     </b-table>
-</div>
   </div>
 </template>
 
