@@ -1,10 +1,9 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-
-    <Saludo />
-    <Saludo /> <Saludo /> <Saludo /> <Saludo /> <Saludo /> <Saludo />
-    <Saludo /> <Saludo /> <Saludo /> <Saludo /> <Saludo /> <Saludo /> <Saludo />
+    <label>Nombre:</label> <input v-model="nombre" /> <br />
+    <label>Hobbie:</label> <input v-model="hobbie" /> <br />
+    <button @click="addUsers">Agregar</button>
+    {{usuarios}}
   </div>
 </template>
 
@@ -14,6 +13,18 @@ import Saludo from "./components/Saludo.vue";
 
 export default {
   name: "App",
+  data() {
+    return {
+      nombre: "",
+      hobbie: "",
+      usuarios: [],
+    };
+  },
+  methods: {
+    addUsers() {
+      this.usuarios.push({ nombre: this.nombre, hobbie: this.hobbie });
+    },
+  },
   components: {
     HelloWorld,
     Saludo,
