@@ -3,7 +3,7 @@
     <label>Nombre:</label> <input v-model="nombre" /> <br />
     <label>Hobbie:</label> <input v-model="hobbie" /> <br />
     <button @click="addUsers">Agregar</button>
-    {{usuarios}}
+    <b-table striped hover :items='usuarios'></b-table>
   </div>
 </template>
 
