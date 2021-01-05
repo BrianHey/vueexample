@@ -4,13 +4,33 @@
     <label>Hobbie:</label> <input v-model="hobbie" /> <br />
     <button @click="addUsers" v-show="!encendido">Agregar</button>
     <button @click="updateUsers" v-show="encendido">actualizar</button>
-    <b-table striped hover :items="usuarios" :fields="fields">
+    <!-- <b-table :items="usuarios" :fields="fields">
       <template #cell(botones)="data">
         <b-button @click="editUsers(data.index)" variant="outline-primary"
           >editar</b-button
         >
       </template>
-    </b-table>
+    </b-table> -->
+
+    <table class="table">
+      <thead>
+        <th>Nombre</th>
+        <th>Hobbie</th>
+        <th>Acciones</th>
+      </thead>
+
+      <tbody>
+        <tr v-for="(usuario, i) in usuarios" :key="i">
+          <td>{{ usuario.nombre }}</td>
+          <td>{{ usuario.hobbie }}</td>
+          <td>
+            <b-button @click="editUsers(i)" variant="outline-primary"
+              >editar</b-button
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
@@ -36,15 +56,19 @@ export default {
     },
     editUsers(indice) {
       this.indiceUsersEditing = indice;
-      this.encendido=true
+      this.encendido = true;
     },
     updateUsers() {
       let elementoModificado = { nombre: this.nombre, hobbie: this.hobbie };
-      console.log(elementoModificado)
-      this.usuarios[this.indiceUsersEditing] = elementoModificado;
-      
+      console.log(elementoModificado);
+      let usuarios = this.usuarios;
+
+      usuarios[this.indiceUsersEditing] = elementoModificado;
+      let newUsuarios = usuarios;
+
+      this.usuarios = newUsuarios;
+
       this.encendido = false;
-  
     },
   },
   components: {
